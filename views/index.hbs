@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+{{ message }}
+</body>
+<script>
+const socket = new WebSocket('ws:/localhost:3000');
+socket.binaryType = "arraybuffer";
+socket.onopen = function() {
+      const dataConnect = {
+          event: 'create_simple',
+          data: {
+            name: 'hello',
+            description: 'description'
+          }       
+        }
+      // Convert JSON object to string
+      const jsonString = JSON.stringify(dataConnect)
+      socket.send(jsonString);
+      socket.onmessage = function(e) {
+        let data = e.data
+        const message = JSON.parse(data)
+        console.log("message", message);
+        alert(JSON.stringify(message))
+      };
+    };
+
+</script>
+
+</html>
